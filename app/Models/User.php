@@ -6,10 +6,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-class User extends Authenticatable implements MustVerifyEmail
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+class User extends Authenticatable implements MustVerifyEmail,CanResetPassword
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,CanResetPasswordTrait;
 
     protected $fillable = [
         'name',
