@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Services\Api\Auth\AuthService;
+use App\Services\Api\Auth\ResetPasswordService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
@@ -34,43 +35,43 @@ class ResetPasswordController extends Controller
             'token' => $response['token']
         ]);
     }
-    public function forgotPassword(Request $request)
+    public function forgotPassword(Request $request, ResetPasswordService $service)
     {
-        $request->validate([
-            'email' => 'required|email'
-        ]);
+        $request->validate(['email' => 'required|email']);
 
-        $key = 'password-reset:' . $request->ip();
+        $res = $service->requestResetLink($request->email, $request->ip());
 
-        // اگر بیش از حد درخواست داده
-        if (RateLimiter::tooManyAttempts($key, 4)) { // نهایت 4 تلاش
-            return response()->json([
-                'status' => false,
-                'message' => 'Too many attempts. Try again later.'
-            ], 429);
-        }
+        return response()->json([
+            'status' => $res['status'],
+            'message' => $res['message'],
+        ], $res['code']);
+    }
 
-        RateLimiter::hit($key, 60 * 15);
-        // ۱۵ دقیقه بعد صفر می‌شود
 
-        $user = User::where('email', $request->email)->first();
-
-        // اگر کاربر وجود نداشت
-        if (!$user) {
-            return response()->json([
-                'status' => true,
-                'message' => 'If this email exists, a reset link has been sent.'
-            ]);
-        }
-
-        // ساخت توکن برای کاربر موجود
-        $token = Password::createToken($user);
-
-        // ارسال ایمیل کاستوم
-        $user->notify(new \App\Notifications\ResetPasswordApi($token));
+    public function signedResetPassword(Request $request)
+    {
         return response()->json([
             'status' => true,
-            'message' => 'Reset link sent to your email.'
+            'message' => 'Signed link is valid.',
+            'email'   => $request->email,
+            'token'   => $request->token
         ]);
+    }
+
+
+    public function resetPassword(Request $request, ResetPasswordService $service)
+    {
+        $request->validate([
+            'email'    => 'required|email',
+            'token'    => 'required',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $result = $service->resetPassword($request->only('email', 'password', 'password_confirmation', 'token'));
+
+        return response()->json([
+            'status' => $result['status'],
+            'message' => $result['message'],
+        ], $result['code']);
     }
 }

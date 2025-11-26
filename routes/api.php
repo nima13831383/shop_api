@@ -25,9 +25,9 @@ Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify']
     ->middleware('signed'); // فقط امضا را چک می‌کند
 
 
-//Route::post('/password/forgot', [ResetPasswordController::class, 'forgotPassword']);
-// Route::get('/password/reset-signed', [AuthController::class, 'signedResetPassword'])
-//     ->name('password.reset.signed')
-//     ->middleware('signed');
-// Route::post('/password/reset', [AuthController::class, 'resetPassword'])
-//     ->name('password.reset');
+Route::post('/password/forgot', [ResetPasswordController::class, 'forgotPassword']);
+Route::get('/password/reset-signed', [ResetPasswordController::class, 'signedResetPassword'])
+    ->name('password.reset.signed')
+    ->middleware('signed');
+Route::post('/password/reset', [ResetPasswordController::class, 'resetPassword'])
+    ->name('password.reset');
