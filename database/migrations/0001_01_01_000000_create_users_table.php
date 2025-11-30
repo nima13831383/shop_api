@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
+            $table->enum('role', ['admin-1', 'admin-2', 'customer'])->default('customer');
             $table->timestamp('email_verified_at')->nullable();
 
             // اگر میخوای login بدون پکیج داشته باشی

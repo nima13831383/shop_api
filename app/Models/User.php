@@ -8,9 +8,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
-class User extends Authenticatable implements MustVerifyEmail,CanResetPassword
+
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use HasFactory, Notifiable,CanResetPasswordTrait;
+    use HasFactory, Notifiable, CanResetPasswordTrait;
 
     protected $fillable = [
         'name',
@@ -31,5 +32,9 @@ class User extends Authenticatable implements MustVerifyEmail,CanResetPassword
     public function sendEmailVerificationNotification()
     {
         $this->notify(new \App\Notifications\VerifyEmailApi);
+    }
+    public function getIsAdminAttribute()
+    {
+        return (bool) ($this->attributes['role'] === 'admin-1');
     }
 }

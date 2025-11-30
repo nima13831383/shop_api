@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('discount_price')->nullable();
             $table->unsignedInteger('stock')->default(0);
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

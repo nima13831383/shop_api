@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Shop;
 
-use App\Models\ProductImage;
-use App\Http\Requests\StoreProductImageRequest;
-use App\Http\Requests\UpdateProductImageRequest;
+use App\Http\Controllers\Controller;
+use App\Models\Review;
+use App\Http\Requests\StoreReviewRequest;
+use App\Http\Requests\UpdateReviewRequest;
 
-class ProductImageController extends Controller
+class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +20,7 @@ class ProductImageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductImageRequest $request)
+    public function store(StoreReviewRequest $request)
     {
         //
     }
@@ -27,7 +28,7 @@ class ProductImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductImage $productImage)
+    public function show(Review $review)
     {
         //
     }
@@ -35,7 +36,7 @@ class ProductImageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductImageRequest $request, ProductImage $productImage)
+    public function update(UpdateReviewRequest $request, Review $review)
     {
         //
     }
@@ -43,7 +44,7 @@ class ProductImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductImage $productImage)
+    public function destroy(Review $review)
     {
         //
     }

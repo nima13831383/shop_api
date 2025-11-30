@@ -3,49 +3,60 @@
 namespace App\Http\Controllers\Api\Shop;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Services\Api\Shop\ProductService;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(
+        protected ProductService $service
+    ) {}
+
     public function index()
     {
-        //
+        return response()->json([
+            'status' => true,
+            'data'   => $this->service->listProducts()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreProductRequest $request)
     {
-        //
+        $product = $this->service->createProduct($request->validated());
+
+        return response()->json([
+            'status' => true,
+            'data'   => $product
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Product $product)
     {
-        //
+        return response()->json([
+            'status' => true,
+            'data'   => [$product->load(['images', 'categories']), $product->image_urls]
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product = $this->service->updateProduct($product, $request->validated());
+
+        return response()->json([
+            'status' => true,
+            'data'   => $product
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Product $product)
     {
-        //
+        $this->service->deleteProduct($product);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Product deleted.'
+        ]);
     }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();  // حذف محصول → حذف عکس‌هایش
             $table->string('url');
+            $table->boolean('is_main')->default(false);
             $table->timestamps();
         });
     }
