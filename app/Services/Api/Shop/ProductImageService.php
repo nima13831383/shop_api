@@ -25,7 +25,7 @@ class ProductImageService
 
     public function delete(ProductImage $image)
     {
-        Storage::disk('public')->delete($image->url);
+        Storage::disk('public')->delete($image->getRawOriginal('url'));
 
         return $this->repo->delete($image);
     }

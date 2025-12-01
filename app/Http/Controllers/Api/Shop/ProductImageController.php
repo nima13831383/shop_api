@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Services\Api\Shop\ProductImageService;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductImageRequest;
 
 class ProductImageController extends Controller
 {
@@ -14,12 +15,9 @@ class ProductImageController extends Controller
         protected ProductImageService $service
     ) {}
 
-    public function store(Request $request, Product $product)
+    public function store(StoreProductImageRequest $request, Product $product)
     {
-        $request->validate([
-            'image' => 'required|image|max:2048'
-        ]);
-
+        $request->validated();
         $image = $this->service->upload($product, $request->file('image'));
 
         return response()->json([

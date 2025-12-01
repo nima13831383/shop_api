@@ -36,7 +36,7 @@ class ProductController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data'   => [$product->load(['images', 'categories']), $product->image_urls]
+            'data'   => $product->load(['images', 'categories'])
         ]);
     }
 
