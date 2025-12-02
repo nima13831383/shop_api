@@ -68,13 +68,14 @@ Route::prefix('products/{product}')->group(function () {
 Route::delete('/product-images/{image}', [ProductImageController::class, 'destroy'])->middleware('check.admin');
 
 Route::put('/product-images/{image}/main', [ProductImageController::class, 'setMain'])->middleware('check.admin');
-Route::apiResource('product-reviews', ProductReviewController::class)
-    ->only(['index', 'show']);
+
 
 Route::apiResource('product-reviews', ProductReviewController::class)
-    ->only(['store', 'update', 'destroy'])
-    ->middleware('check.admin');
-
+    ->only(['show']);
+Route::apiResource('products/{productId}/product-reviews', ProductReviewController::class)
+    ->only(['index']);
+Route::apiResource('product-reviews', ProductReviewController::class)
+    ->only(['store', 'update', 'destroy'])->middleware('check.admin');
 Route::prefix('product-reviews/{product_review}')->group(function () {
     Route::put('approve', [ProductReviewController::class, 'approve']);
     Route::put('reject', [ProductReviewController::class, 'reject']);

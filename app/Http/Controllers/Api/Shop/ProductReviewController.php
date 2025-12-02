@@ -24,6 +24,13 @@ class ProductReviewController extends Controller
             'data'   => $reviews
         ]);
     }
+    public function show(ProductReview $product_review)
+    {
+        return response()->json([
+            'status' => true,
+            'data'   => $product_review
+        ]);
+    }
 
     public function store(StoreProductReviewRequest $request)
     {
@@ -38,30 +45,30 @@ class ProductReviewController extends Controller
         ], 201);
     }
 
-    public function update(UpdateProductReviewRequest $request, ProductReview $review)
+    public function update(UpdateProductReviewRequest $request, ProductReview $product_review)
     {
-        $review = $this->service->update($review, $request->validated());
+        $product_review = $this->service->update($product_review, $request->validated());
 
         return response()->json([
             'status' => true,
-            'data'   => $review
+            'data'   => $product_review
         ]);
     }
 
-    public function destroy(ProductReview $review)
+    public function destroy(ProductReview $product_review)
     {
-        $this->service->delete($review);
+        $this->service->delete($product_review);
         return response()->json([
             'status' => true,
             'message' => 'Review deleted'
         ]);
     }
-    public function approve(ProductReview $review)
+    public function approve(ProductReview $product_review)
     {
-        return $this->service->approve($review);
+        return $this->service->approve($product_review);
     }
-    public function reject(ProductReview $review)
+    public function reject(ProductReview $product_review)
     {
-        return $this->service->reject($review);
+        return $this->service->reject($product_review);
     }
 }
