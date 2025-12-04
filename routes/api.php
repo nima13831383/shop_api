@@ -80,3 +80,9 @@ Route::prefix('product-reviews/{product_review}')->group(function () {
     Route::put('approve', [ProductReviewController::class, 'approve']);
     Route::put('reject', [ProductReviewController::class, 'reject']);
 })->middleware('check.admin');
+
+
+Route::middleware('cart.guest')->group(function () {
+    Route::apiResource('cart', \App\Http\Controllers\Api\Shop\CartController::class)->except('index','show');
+    Route::get('cart-items', [\App\Http\Controllers\Api\Shop\CartController::class, 'index']);
+});

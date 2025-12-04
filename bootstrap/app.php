@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.api' => \App\Http\Middleware\ApiAuth::class,
             'check.admin' => \App\Http\Middleware\IsAdmin::class,
+            'cart.guest' => \App\Http\Middleware\CartGuestMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
